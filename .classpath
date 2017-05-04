@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/java/Solomonz.main"/>
 	<classpathentry kind="src" path="src/java/main"/>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/technowiz/.m2/repository/net/sf/jopt-simple/jopt-simple/4.8/jopt-simple-4.8.jar" sourcepath="/Users/technowiz/.m2/repository/net/sf/jopt-simple/jopt-simple/4.8/jopt-simple-4.8-sources.jar">
 		<attributes>
