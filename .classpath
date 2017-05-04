@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java/Solomonz.main"/>
+	<classpathentry kind="src" path="src/java/main"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/technowiz/.m2/repository/net/sf/jopt-simple/jopt-simple/4.8/jopt-simple-4.8.jar" sourcepath="/Users/technowiz/.m2/repository/net/sf/jopt-simple/jopt-simple/4.8/jopt-simple-4.8-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="net.sf.jopt-simple"/>
+			<attribute name="maven.artifactId" value="jopt-simple"/>
+			<attribute name="maven.version" value="4.8"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/technowiz/.m2/repository/com/sparkjava/spark-core/2.5.4/spark-core-2.5.4.jar" sourcepath="/Users/technowiz/.m2/repository/com/sparkjava/spark-core/2.5.4/spark-core-2.5.4-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.sparkjava"/>
+			<attribute name="maven.artifactId" value="spark-core"/>
+			<attribute name="maven.version" value="2.5.4"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/technowiz/.m2/repository/com/sparkjava/spark-template-freemarker/2.3/spark-template-freemarker-2.3.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.sparkjava"/>
+			<attribute name="maven.artifactId" value="spark-template-freemarker"/>
+			<attribute name="maven.version" value="2.3"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/technowiz/.m2/repository/org/freemarker/freemarker/2.3.19/freemarker-2.3.19.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.freemarker"/>
+			<attribute name="maven.artifactId" value="freemarker"/>
+			<attribute name="maven.version" value="2.3.19"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/technowiz/.m2/repository/com/google/guava/guava/21.0/guava-21.0.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.google.guava"/>
+			<attribute name="maven.artifactId" value="guava"/>
+			<attribute name="maven.version" value="21.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
