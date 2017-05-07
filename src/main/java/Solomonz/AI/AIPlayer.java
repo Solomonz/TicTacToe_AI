@@ -1,62 +1,93 @@
 package Solomonz.AI;
 
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 import Solomonz.game.TicTacToe;
 
 public class AIPlayer
 {
-    public static int[] play(int[][] board, boolean playerOne)
+    public static int[] play(int[][] board)
     {
-        Set<MoveWrapper> possibilities = new HashSet<>();
+        System.out.println("for starting board: ");
+        for (int i = 0; i < 3; i++)
+        {
+            System.out.println(Arrays.toString(board[i]));
+        }
+        System.out.println("\n");
+        MoveWrapper best = new AIPlayer().new MoveWrapper(-2, null, false,
+                board);
+        int[] out = new int[2];
         for (int row = 0; row < 3; row++)
         {
             for (int col = 0; col < 3; col++)
             {
                 if (board[row][col] == 0)
                 {
-                    possibilities.add(getBestMove(board, new int[] {row, col},
-                            playerOne, playerOne));
+                    int[][] next = TicTacToe.copyBoard(board);
+                    next[row][col] = 2;
+                    MoveWrapper nm = getBestMove(next, new int[] {row, col},
+                            false);
+                    System.out.println("for board: ");
+                    for (int i = 0; i < 3; i++)
+                    {
+                        System.out.println(Arrays.toString(next[i]));
+                    }
+                    System.out.println(nm.toString());
+                    System.out.println();
+                    if (nm.getHeuristic() > best.getHeuristic())
+                    {
+                        best = nm;
+                        out = new int[] {row, col};
+                    }
                 }
             }
         }
-        return Collections.max(possibilities).getMovePos();
+        System.out.println("\n" + best.toString() + "\n\n");
+
+        return out;
     }
 
     private static MoveWrapper getBestMove(int[][] board, int[] justMoved,
-            boolean playerOne, boolean playerOneJustMoved)
+            boolean playerOneJustMoved)
     {
         int[][] next = TicTacToe.copyBoard(board);
 
-        if (TicTacToe.draw(next))
+        if (TicTacToe.gameOver(next))
         {
-            return new AIPlayer().new MoveWrapper(0, justMoved, playerOne);
+
+            if (TicTacToe.won(next, false))
+            {
+                return new AIPlayer().new MoveWrapper(1, justMoved, false,
+                        next);
+            }
+            else if (TicTacToe.draw(next))
+            {
+                return new AIPlayer().new MoveWrapper(0, justMoved, false,
+                        next);
+            }
+            else
+            {
+                assert (TicTacToe.won(next, true));
+                return new AIPlayer().new MoveWrapper(-1, justMoved, false,
+                        next);
+            }
         }
 
-        if (TicTacToe.won(next, playerOneJustMoved))
+        if (playerOneJustMoved) // maximizing player
         {
-            return new AIPlayer().new MoveWrapper(
-                    playerOne == playerOneJustMoved ? -1 : 1, justMoved,
-                    playerOne);
-        }
-
-        if (playerOne != playerOneJustMoved) // maximizing player
-        {
-            MoveWrapper best = new AIPlayer().new MoveWrapper(-2, null,
-                    playerOne);
+            MoveWrapper best = new AIPlayer().new MoveWrapper(-2, null, true,
+                    null);
             for (int row = 0; row < 3; row++)
             {
                 for (int col = 0; col < 3; col++)
                 {
+                    next = TicTacToe.copyBoard(board);
                     if (next[row][col] == 0)
                     {
-                        next[row][col] = playerOne ? 1 : 2;
+                        next[row][col] = 2;
                         MoveWrapper possible = getBestMove(next,
-                                new int[] {row, col}, playerOne,
-                                !playerOneJustMoved);
+                                new int[] {row, col}, false);
                         if (possible.getHeuristic() > best.getHeuristic())
                         {
                             best = possible;
@@ -68,18 +99,18 @@ public class AIPlayer
         }
         else // minimizing player
         {
-            MoveWrapper best = new AIPlayer().new MoveWrapper(2, null,
-                    playerOne);
+            MoveWrapper best = new AIPlayer().new MoveWrapper(2, null, true,
+                    null);
             for (int row = 0; row < 3; row++)
             {
                 for (int col = 0; col < 3; col++)
                 {
+                    next = TicTacToe.copyBoard(board);
                     if (next[row][col] == 0)
                     {
-                        next[row][col] = playerOne ? 2 : 1;
+                        next[row][col] = 1;
                         MoveWrapper possible = getBestMove(next,
-                                new int[] {row, col}, playerOne,
-                                !playerOneJustMoved);
+                                new int[] {row, col}, true);
                         if (possible.getHeuristic() < best.getHeuristic())
                         {
                             best = possible;
@@ -91,17 +122,20 @@ public class AIPlayer
         }
     }
 
-    class MoveWrapper implements Comparable<MoveWrapper>
+    class MoveWrapper
     {
         public double heuristic;
         public int[] movePos;
         public boolean p1;
+        public int[][] endingBoard;
 
-        public MoveWrapper(double h, int[] mp, boolean playerOne)
+        public MoveWrapper(double h, int[] mp, boolean playerOne,
+                int[][] afterMove)
         {
             heuristic = h;
             movePos = mp;
             p1 = playerOne;
+            endingBoard = afterMove;
         }
 
         public double getHeuristic()
@@ -120,11 +154,14 @@ public class AIPlayer
         }
 
         @Override
-        public int compareTo(MoveWrapper o)
+        public String toString()
         {
-            return Double.compare(getHeuristic(), o.getHeuristic());
+            return "MoveWrapper: " + getHeuristic() + ", "
+                    + Arrays.toString(movePos) + " (game over: "
+                    + TicTacToe.gameOver(endingBoard) + ")\n"
+                    + Arrays.toString(endingBoard[0]) + "\n"
+                    + Arrays.toString(endingBoard[1]) + "\n"
+                    + Arrays.toString(endingBoard[2]);
         }
-
-
     }
 }

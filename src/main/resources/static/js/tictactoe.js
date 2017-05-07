@@ -13,6 +13,15 @@ function clicked(where) {
       const responseObject = JSON.parse(responseJSON);
       const newBoard = responseObject.boardAfterwards;
       drawBoard(newBoard);
+      if(responseObject.statusOfGame == "draw") {
+        document.getElementById("reset").innerText = "It's a draw! Play again?";
+      } else if(responseObject.statusOfGame == "won") {
+        if(responseObject.playerOnesTurnAfterwards) {
+          document.getElementById("reset").innerText = "You lost! Play again?";
+        } else {
+          document.getElementById("reset").innerText = "You won! Play again?";
+        }
+      }
   });
 }
 
@@ -33,5 +42,6 @@ function drawBoard(board) {
 function reset() {
   $.post("/game/backend", { type: "reset" }, responseJSON => {
       drawBoard(JSON.parse(responseJSON).boardAfterwards);
+      document.getElementById("reset").innerText = "Start a new game";
   });
 }

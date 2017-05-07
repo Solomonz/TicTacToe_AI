@@ -57,7 +57,7 @@ public class TicTacToe
             PlayResultsWrapper future = play(true, row, col);
             if (future.getStatusOfGame().equals("continue"))
             {
-                int[] desired = AIPlayer.play(board, false);
+                int[] desired = AIPlayer.play(board);
                 return play(false, desired[0], desired[1]);
             }
             else
@@ -92,13 +92,20 @@ public class TicTacToe
                         && curBoard[2][0] == p);
     }
 
+    public static boolean gameOver(int[][] curBoard)
+    {
+        return won(curBoard, true) || won(curBoard, false)
+                || !(curBoard[0][0] == 0 || curBoard[0][1] == 0
+                        || curBoard[0][2] == 0 || curBoard[1][0] == 0
+                        || curBoard[1][1] == 0 || curBoard[1][2] == 0
+                        || curBoard[2][0] == 0 || curBoard[2][1] == 0
+                        || curBoard[2][2] == 0);
+    }
+
     public static boolean draw(int[][] curBoard)
     {
-        return !(curBoard[0][0] == 0 || curBoard[0][1] == 0
-                || curBoard[0][2] == 0 || curBoard[1][0] == 0
-                || curBoard[1][1] == 0 || curBoard[1][2] == 0
-                || curBoard[2][0] == 0 || curBoard[2][1] == 0
-                || curBoard[2][2] == 0);
+        return gameOver(curBoard) && !won(curBoard, true)
+                && !won(curBoard, false);
     }
 
     private class PlayResultsWrapper
@@ -140,6 +147,7 @@ public class TicTacToe
                 board[r][c] = 0;
             }
         }
+        firstPlayersTurn = true;
         return new PlayResultsWrapper(board, true, "continue");
     }
 }
