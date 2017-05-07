@@ -33,44 +33,50 @@ public class TicTacToe
         if (canPlay(playerOne, row, col))
         {
             board[row][col] = playerOne ? 1 : 2;
-            if (won(playerOne))
+            if (won(board, playerOne))
             {
                 return new PlayResultsWrapper(board, !playerOne, "won");
             }
-            else if (draw())
+            else if (draw(board))
             {
                 return new PlayResultsWrapper(board, !playerOne, "draw");
             }
             firstPlayersTurn = !firstPlayersTurn;
         }
 
-        int[][] out = new int[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++)
-            for (int j = 0; j < COLS; j++)
-                out[i][j] = board[i][j];
-
-        return new PlayResultsWrapper(out, firstPlayersTurn, "continue");
+        return new PlayResultsWrapper(copyBoard(board), firstPlayersTurn,
+                "continue");
     }
 
-    private boolean won(boolean lookingAtPlayerOne)
+    public static boolean won(int[][] curBoard, boolean lookingAtPlayerOne)
     {
         int p = lookingAtPlayerOne ? 1 : 2;
 
-        return (board[0][0] == p && board[0][1] == p && board[0][2] == p)
-                || (board[1][0] == p && board[1][1] == p && board[1][2] == p)
-                || (board[2][0] == p && board[2][1] == p && board[2][2] == p)
-                || (board[0][0] == p && board[1][0] == p && board[2][0] == p)
-                || (board[0][1] == p && board[1][1] == p && board[2][1] == p)
-                || (board[0][2] == p && board[1][2] == p && board[2][2] == p)
-                || (board[0][0] == p && board[1][1] == p && board[2][2] == p)
-                || (board[0][2] == p && board[1][1] == p && board[2][0] == p);
+        return (curBoard[0][0] == p && curBoard[0][1] == p
+                && curBoard[0][2] == p)
+                || (curBoard[1][0] == p && curBoard[1][1] == p
+                        && curBoard[1][2] == p)
+                || (curBoard[2][0] == p && curBoard[2][1] == p
+                        && curBoard[2][2] == p)
+                || (curBoard[0][0] == p && curBoard[1][0] == p
+                        && curBoard[2][0] == p)
+                || (curBoard[0][1] == p && curBoard[1][1] == p
+                        && curBoard[2][1] == p)
+                || (curBoard[0][2] == p && curBoard[1][2] == p
+                        && curBoard[2][2] == p)
+                || (curBoard[0][0] == p && curBoard[1][1] == p
+                        && curBoard[2][2] == p)
+                || (curBoard[0][2] == p && curBoard[1][1] == p
+                        && curBoard[2][0] == p);
     }
 
-    private boolean draw()
+    public static boolean draw(int[][] curBoard)
     {
-        return !(board[0][0] == 0 || board[0][1] == 0 || board[0][2] == 0
-                || board[1][0] == 0 || board[1][1] == 0 || board[1][2] == 0
-                || board[2][0] == 0 || board[2][1] == 0 || board[2][2] == 0);
+        return !(curBoard[0][0] == 0 || curBoard[0][1] == 0
+                || curBoard[0][2] == 0 || curBoard[1][0] == 0
+                || curBoard[1][1] == 0 || curBoard[1][2] == 0
+                || curBoard[2][0] == 0 || curBoard[2][1] == 0
+                || curBoard[2][2] == 0);
     }
 
     private class PlayResultsWrapper
@@ -101,5 +107,15 @@ public class TicTacToe
         {
             return statusOfGame;
         }
+    }
+
+    public static int[][] copyBoard(int[][] curBoard)
+    {
+        int[][] out = new int[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++)
+            for (int j = 0; j < COLS; j++)
+                out[i][j] = curBoard[i][j];
+
+        return out;
     }
 }
