@@ -9,7 +9,7 @@ import Solomonz.game.TicTacToe;
 
 public class AIPlayer
 {
-    public int[] play(int[][] board, boolean playerOne)
+    public static int[] play(int[][] board, boolean playerOne)
     {
         Set<MoveWrapper> possibilities = new HashSet<>();
         for (int row = 0; row < 3; row++)
@@ -26,25 +26,27 @@ public class AIPlayer
         return Collections.max(possibilities).getMovePos();
     }
 
-    private MoveWrapper getBestMove(int[][] board, int[] justMoved,
+    private static MoveWrapper getBestMove(int[][] board, int[] justMoved,
             boolean playerOne, boolean playerOneJustMoved)
     {
         int[][] next = TicTacToe.copyBoard(board);
 
         if (TicTacToe.draw(next))
         {
-            return new MoveWrapper(0, justMoved, playerOne);
+            return new AIPlayer().new MoveWrapper(0, justMoved, playerOne);
         }
 
         if (TicTacToe.won(next, playerOneJustMoved))
         {
-            return new MoveWrapper(playerOne == playerOneJustMoved ? 1 : -1,
-                    justMoved, playerOne);
+            return new AIPlayer().new MoveWrapper(
+                    playerOne == playerOneJustMoved ? -1 : 1, justMoved,
+                    playerOne);
         }
 
         if (playerOne != playerOneJustMoved) // maximizing player
         {
-            MoveWrapper best = new MoveWrapper(-2, null, playerOne);
+            MoveWrapper best = new AIPlayer().new MoveWrapper(-2, null,
+                    playerOne);
             for (int row = 0; row < 3; row++)
             {
                 for (int col = 0; col < 3; col++)
@@ -66,7 +68,8 @@ public class AIPlayer
         }
         else // minimizing player
         {
-            MoveWrapper best = new MoveWrapper(2, null, playerOne);
+            MoveWrapper best = new AIPlayer().new MoveWrapper(2, null,
+                    playerOne);
             for (int row = 0; row < 3; row++)
             {
                 for (int col = 0; col < 3; col++)
@@ -90,18 +93,18 @@ public class AIPlayer
 
     class MoveWrapper implements Comparable<MoveWrapper>
     {
-        public int heuristic;
+        public double heuristic;
         public int[] movePos;
         public boolean p1;
 
-        public MoveWrapper(int h, int[] mp, boolean playerOne)
+        public MoveWrapper(double h, int[] mp, boolean playerOne)
         {
             heuristic = h;
             movePos = mp;
             p1 = playerOne;
         }
 
-        public int getHeuristic()
+        public double getHeuristic()
         {
             return heuristic;
         }
@@ -119,7 +122,7 @@ public class AIPlayer
         @Override
         public int compareTo(MoveWrapper o)
         {
-            return Integer.compare(getHeuristic(), o.getHeuristic());
+            return Double.compare(getHeuristic(), o.getHeuristic());
         }
 
 

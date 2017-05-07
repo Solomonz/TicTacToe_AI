@@ -9,6 +9,8 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import Solomonz.GUI.TicTacToeRoute;
+import Solomonz.game.TicTacToe;
 import freemarker.template.Configuration;
 import joptsimple.OptionException;
 import joptsimple.OptionParser;
@@ -24,6 +26,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class Main
 {
     private static final int DEFAULT_PORT = 4567;
+    private TicTacToe game = new TicTacToe();
 
     public Main(int portNum)
     {
@@ -75,7 +78,7 @@ public class Main
         Spark.exception(Exception.class, new ExceptionPrinter());
 
         Spark.get("/game", new TicTacToeFrontEnd(), createEngine());
-        Spark.post("/game/AI", new TicTacToeAiFrontEnd());
+        Spark.post("/game/backend", new TicTacToeRoute(this));
     }
 
     private class TicTacToeFrontEnd implements TemplateViewRoute
@@ -123,5 +126,10 @@ public class Main
             }
             res.body(stacktrace.toString());
         }
+    }
+
+    public TicTacToe getGame()
+    {
+        return game;
     }
 }

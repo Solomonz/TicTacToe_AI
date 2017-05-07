@@ -1,6 +1,8 @@
 package Solomonz.game;
 
 
+import Solomonz.AI.AIPlayer;
+
 public class TicTacToe
 {
     private boolean firstPlayersTurn = true;
@@ -42,6 +44,26 @@ public class TicTacToe
                 return new PlayResultsWrapper(board, !playerOne, "draw");
             }
             firstPlayersTurn = !firstPlayersTurn;
+        }
+
+        return new PlayResultsWrapper(copyBoard(board), firstPlayersTurn,
+                "continue");
+    }
+
+    public PlayResultsWrapper userPlayed(int row, int col)
+    {
+        if (canPlay(true, row, col))
+        {
+            PlayResultsWrapper future = play(true, row, col);
+            if (future.getStatusOfGame().equals("continue"))
+            {
+                int[] desired = AIPlayer.play(board, false);
+                return play(false, desired[0], desired[1]);
+            }
+            else
+            {
+                return future;
+            }
         }
 
         return new PlayResultsWrapper(copyBoard(board), firstPlayersTurn,
@@ -93,16 +115,6 @@ public class TicTacToe
             statusOfGame = status;
         }
 
-        public int[][] getBoardAfterwards()
-        {
-            return boardAfterwards;
-        }
-
-        public boolean isPlayerOnesTurnAfterwards()
-        {
-            return playerOnesTurnAfterwards;
-        }
-
         public String getStatusOfGame()
         {
             return statusOfGame;
@@ -117,5 +129,17 @@ public class TicTacToe
                 out[i][j] = curBoard[i][j];
 
         return out;
+    }
+
+    public PlayResultsWrapper newGame()
+    {
+        for (int r = 0; r < 3; r++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                board[r][c] = 0;
+            }
+        }
+        return new PlayResultsWrapper(board, true, "continue");
     }
 }
